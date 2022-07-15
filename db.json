@@ -1,0 +1,11 @@
+{
+  "todo": [
+    {
+      "id": "todo1",
+      "task": "eat friut",
+      "status": "todo"
+    }
+  ],
+  "inprogress": [],
+  "completed": []
+}

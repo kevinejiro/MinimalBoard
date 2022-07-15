@@ -1,26 +1,24 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, { useState } from "react";
 
-function App() {
+// interface
+import { Ticket } from "./models/ticket";
+
+// css
+import styles from "./App.module.css";
+
+const App: React.FC = () => {
+  const [inTodosTickets, setInTodosTickets] = useState<Ticket[]>([]);
+  const [inProgressTickets, setInProgressTickets] = useState<Ticket[]>([]);
+  const [completedTickets, setCompletedTickets] = useState<Ticket[]>([]);
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
+    <div className={styles.App}>
+      <section className={styles.Appinner}></section>
+      <header>
+        <h1>Minimal Kanban Board</h1>
       </header>
     </div>
   );
-}
+};
 
 export default App;

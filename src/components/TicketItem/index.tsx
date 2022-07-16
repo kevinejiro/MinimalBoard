@@ -29,7 +29,7 @@ const TicketItem: React.FC<IProps> = ({ index, ticket }) => {
               : "none",
           }}
         >
-          <div className={styles.todoDragableItem}>X</div>
+          <div className={styles.dragableIcon}>X</div>
           <span
             className={
               ticket?.status === "completed"

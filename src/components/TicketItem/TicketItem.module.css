@@ -10,8 +10,11 @@
   gap: 0.9rem;
 }
 
-.todoDragableItem {
+.dragableIcon {
   height: 1rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .ticketText {

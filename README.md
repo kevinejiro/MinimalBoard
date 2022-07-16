@@ -35,8 +35,10 @@ This Minimal Kanban board is built with React and TypeScript.
 
 In the project directory, you can run:
 
-- `npm start` to run the app in the development mode on [http://localhost:3000](http://localhost:3000).
+- Before running the app, please install all the dependencies by running `yarn install`
 
-  - Before running the app, please install all the dependencies by running `npm install`
+- `start:server` to run the Json Server [http://localhost:5000](http://localhost:5000).
 
-- `npm run build` to build the app for production in the `build` folder.
+- `yarn start` to run the app in the development mode on [http://localhost:3000](http://localhost:3000).
+
+- `yarn build` to build the app for production in the `build` folder.

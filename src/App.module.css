@@ -4,24 +4,16 @@
   width: 100%;
 }
 
-.App-inner {
+.Appinner {
   width: 95%;
   display: flex;
   flex-direction: column;
 }
 
-/* iPads (portrait and landscape) ----------- */
-@media only screen and (min-device-width: 768px) and (max-device-width: 1223px) {
-}
-
 /* desktop */
 @media only screen and (min-width: 1224px) {
-  .App-inner {
+  .Appinner {
     width: 90%;
     max-width: 1280px;
   }
-}
-
-/* Large screens ----------- */
-@media only screen and (min-width: 1824px) {
 }

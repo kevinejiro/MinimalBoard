@@ -1,0 +1,48 @@
+.ticketListContainer {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  overflow-x: auto;
+  width: 100%;
+  padding: 0.5rem;
+  margin-top: 2rem;
+  /* transition: all ease-in-out 0.5s; */
+}
+
+.ticketList {
+  padding: 8px;
+  background-color: inherit;
+  min-height: 100px;
+  display: flex;
+  flex-direction: column;
+  -moz-box-flex: 1;
+  flex-grow: 1;
+  row-gap: 0.9rem;
+  /* transition: all ease-in-out 0.5s; */
+}
+
+.column {
+  border: 1px solid lightgrey;
+  border-radius: 4px;
+  margin: 0.5rem;
+  display: flex;
+  flex-direction: column;
+  height: fit-content;
+  min-width: 15rem;
+  transition: all ease-in-out 0.5s;
+}
+
+.column > h3 {
+  padding: 8px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  text-transform: capitalize;
+}
+
+.placeholder {
+  margin: 0;
+  border: 1px dashed lightgrey;
+  border-radius: 4px;
+  padding: 1rem;
+  color: rgb(125, 125, 125);
+}

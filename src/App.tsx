@@ -1,10 +1,11 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { DragDropContext, DropResult } from "react-beautiful-dnd";
 import { nanoid } from "nanoid";
 // components
 import TicketList from "./components/TicketList";
+import ErrorBoundary from "./components/ErrorBoundary";
 // interface
-import { Ticket } from "./models/ticket";
+import { Ticket, Status } from "./models/ticket";
 // css
 import styles from "./App.module.css";
 
@@ -13,31 +14,95 @@ const App: React.FC = () => {
   const [inProgressTickets, setInProgressTickets] = useState<Ticket[]>([]);
   const [completedTickets, setCompletedTickets] = useState<Ticket[]>([]);
 
-  const handleAdd = (
-    task: string,
-    status: "todo" | "inprogress" | "completed"
-  ) => {
-    // console.log("task :", task, status);
+  // console.log("todo tickets :", inTodosTickets);
+  // console.log("inProgressTickets :", inProgressTickets);
+  // console.log("completedTickets :", completedTickets);
+
+  useEffect(() => {
+    const getTickets = async () => {
+      const ticketsFromServer = await fetchAllTasks();
+      // console.log("tickets :", ticketsFromServer);
+      let todos = ticketsFromServer[0]?.todo;
+      let inprogress = ticketsFromServer[1]?.inprogress;
+      let completed = ticketsFromServer[2]?.completed;
+      setInTodosTickets(todos);
+      setInProgressTickets(inprogress);
+      setCompletedTickets(completed);
+    };
+
+    getTickets();
+  }, []);
+
+  // Update Ticket
+  const updateTicket = async (tickets: Ticket[], status: Status) => {
+    let index;
+    let postObject;
+    if (status === "inprogress") {
+      index = 2;
+      postObject = { id: index, name: status, inprogress: tickets };
+    } else if (status === "completed") {
+      index = 3;
+      postObject = { id: index, name: status, completed: tickets };
+    } else if (status === "todo") {
+      index = 1;
+      postObject = { id: index, name: status, todo: tickets };
+    }
+
+    const res = await fetch(`http://localhost:5000/tasks/${index}`, {
+      method: "PATCH",
+      headers: {
+        "Content-type": "application/json",
+        "Access-Control-Allow-Origin": "*",
+      },
+      body: JSON.stringify(postObject),
+    });
+
+    const data = await res.json();
+    console.log("data :", data);
+  };
+
+  // Fetch all tickets
+  const fetchAllTasks = async () => {
+    const res = await fetch(`http://localhost:5000/tasks`, {
+      method: "GET",
+      headers: {
+        "Content-type": "application/json",
+        "Access-Control-Allow-Origin": "*",
+      },
+    });
+    const data = await res.json();
+    return data;
+  };
+
+  // const fetchSingleTicket = async (id: string, status: Status) => {
+  //   const res = await fetch(`http://localhost:5000/tasks/1${status}/${id}`);
+  //   const data = await res.json();
+  //   return data;
+  // };
+
+  // handles adding tasks to corresponding column given a status
+  const handleAdd = (task: string, status: Status) => {
     switch (status) {
       case "inprogress":
-        setInProgressTickets([
-          ...inProgressTickets,
-          { id: nanoid(), task, status },
-        ]);
+        let ipTickets = [...inProgressTickets, { id: nanoid(), task, status }];
+        setInProgressTickets(ipTickets);
+        updateTicket(ipTickets, status);
         break;
       case "completed":
-        setCompletedTickets([
-          ...completedTickets,
-          { id: nanoid(), task, status },
-        ]);
+        let cTickets = [...inProgressTickets, { id: nanoid(), task, status }];
+        setCompletedTickets(cTickets);
+        updateTicket(cTickets, status);
         break;
 
       default:
-        setInTodosTickets([...inTodosTickets, { id: nanoid(), task, status }]);
+        let todoTickets = [...inTodosTickets, { id: nanoid(), task, status }];
+        setInTodosTickets(todoTickets);
+        updateTicket(todoTickets, status);
         break;
     }
   };
 
+  // handles drag end logic
   const onDragEnd = (result: DropResult) => {
     const { source, destination } = result;
     if (!destination) return;
@@ -71,8 +136,11 @@ const App: React.FC = () => {
     }
 
     setInTodosTickets(todos);
+    updateTicket(todos, "todo");
     setInProgressTickets(inprogress);
+    updateTicket(inprogress, "inprogress");
     setCompletedTickets(completed);
+    updateTicket(completed, "completed");
   };
 
   return (
@@ -82,12 +150,14 @@ const App: React.FC = () => {
           <header>
             <h1>Minimal Kanban Board</h1>
           </header>
-          <TicketList
-            inTodosTickets={inTodosTickets}
-            handleAdd={handleAdd}
-            inProgressTickets={inProgressTickets}
-            completedTickets={completedTickets}
-          />
+          <ErrorBoundary fallback="Sorry.. there was an error">
+            <TicketList
+              inTodosTickets={inTodosTickets}
+              handleAdd={handleAdd}
+              inProgressTickets={inProgressTickets}
+              completedTickets={completedTickets}
+            />
+          </ErrorBoundary>
         </div>
       </div>
     </DragDropContext>

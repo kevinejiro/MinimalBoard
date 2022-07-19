@@ -4,14 +4,19 @@ import styles from "./TicketItem.module.css";
 import { Ticket } from "../../models/ticket";
 import { Draggable } from "react-beautiful-dnd";
 
+import { useNavigate } from "react-router-dom";
+
 interface IProps {
   index: number;
   ticket: Ticket;
 }
 
 const TicketItem: React.FC<IProps> = ({ index, ticket }) => {
+  let navigate = useNavigate();
   const handleClickToViewTicket = () => {
-    return;
+    navigate(`?taskId=${ticket.id}&status=${ticket.status}`, {
+      state: ticket,
+    });
   };
 
   return (

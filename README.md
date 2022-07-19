@@ -27,9 +27,9 @@ This Minimal Kanban board is built with React and TypeScript.
 
 2. Drag and drop tickets.
 
-3. The tickets are stored in the JSON Server db.
+3. The tickets are persisted in the JSON Server db on port 4000.
 
-4. View single ticket
+4. View single ticket by clicking.
 
 ## Available Scripts
 
@@ -37,8 +37,12 @@ In the project directory, you can run:
 
 - Before running the app, please install all the dependencies by running `yarn install`
 
-- `start:server` to run the Json Server [http://localhost:5000](http://localhost:5000).
+- `start:server` to run the Json Server [http://localhost:5000](http://localhost:4000).
 
 - `yarn start` to run the app in the development mode on [http://localhost:3000](http://localhost:3000).
 
 - `yarn build` to build the app for production in the `build` folder.
+
+## Improvements
+
+- Abstract logic to a decoupled backend.

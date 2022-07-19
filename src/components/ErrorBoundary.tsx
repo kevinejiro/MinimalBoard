@@ -1,5 +1,5 @@
 import React, { Component, ErrorInfo, ReactNode } from "react";
-import { Navigate } from "react-router-dom";
+// import { Navigate } from "react-router-dom";
 
 interface Props {
   fallback: string;
@@ -8,27 +8,24 @@ interface Props {
 
 interface State {
   hasError: boolean;
-  redirect: boolean;
 }
 
 class ErrorBoundary extends Component<Props, State> {
-  state = { hasError: false, redirect: false };
+  state = { hasError: false };
   static getDerivedStateFromError() {
     return { hasError: true };
   }
   componentDidCatch(error: Error, info: ErrorInfo): void {
     console.error("ErrorBoundary caught an error", error, info);
   }
-  componentDidUpdate() {
-    if (this.state.hasError) {
-      setTimeout(() => this.setState({ redirect: true }), 5000);
-    }
-  }
+
   render() {
-    if (this.state.redirect) {
-      return <Navigate to="/" />;
-    } else if (this.state.hasError) {
-      return <h2>{this.props.fallback}</h2>;
+    if (this.state.hasError) {
+      return (
+        <div className="loaderWrapper">
+          <h2>{this.props.fallback}</h2>
+        </div>
+      );
     }
 
     return this.props.children;

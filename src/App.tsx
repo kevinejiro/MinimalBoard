@@ -1,84 +1,76 @@
-import React, { useState, useEffect } from "react";
-import { DragDropContext, DropResult } from "react-beautiful-dnd";
+import React, { useState, useEffect, useCallback, createContext } from "react";
+import { DropResult } from "react-beautiful-dnd";
 import { nanoid } from "nanoid";
+import { useLocation, useNavigate } from "react-router-dom";
 // components
-import TicketList from "./components/TicketList";
+import Modal from "./components/Modal/index";
 import ErrorBoundary from "./components/ErrorBoundary";
-// interface
+import DragDropWrapper from "./components/DragDropWrapper";
+import TicketDetails from "./components/TicketDetails";
+// types
 import { Ticket, Status } from "./models/ticket";
-// css
-import styles from "./App.module.css";
+// Api
+import { fetchAllTickets, updateTicket } from "./api";
+
+interface ContextProps {
+  inTodosTickets: Ticket[];
+  inProgressTickets: Ticket[];
+  completedTickets: Ticket[];
+  isLoading: boolean;
+  handleAdd: (task: string, status: Status) => void;
+}
+
+export const KanbanContext = createContext<ContextProps | null>(null);
 
 const App: React.FC = () => {
   const [inTodosTickets, setInTodosTickets] = useState<Ticket[]>([]);
   const [inProgressTickets, setInProgressTickets] = useState<Ticket[]>([]);
   const [completedTickets, setCompletedTickets] = useState<Ticket[]>([]);
 
-  // console.log("todo tickets :", inTodosTickets);
-  // console.log("inProgressTickets :", inProgressTickets);
-  // console.log("completedTickets :", completedTickets);
+  const [isLoading, setIsLoading] = useState(true);
+  const [viewModal, setViewModal] = useState(false);
+
+  const navigate = useNavigate();
+
+  const toggleCancelHandler = useCallback(() => {
+    setViewModal(!viewModal);
+    navigate("/");
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [viewModal]);
+
+  const useQuery = () => new URLSearchParams(useLocation().search);
+  const query = useQuery();
+  const taskId = query.get("taskId");
 
   useEffect(() => {
-    const getTickets = async () => {
-      const ticketsFromServer = await fetchAllTasks();
-      // console.log("tickets :", ticketsFromServer);
-      let todos = ticketsFromServer[0]?.todo;
-      let inprogress = ticketsFromServer[1]?.inprogress;
-      let completed = ticketsFromServer[2]?.completed;
-      setInTodosTickets(todos);
-      setInProgressTickets(inprogress);
-      setCompletedTickets(completed);
-    };
-
-    getTickets();
-  }, []);
-
-  // Update Ticket
-  const updateTicket = async (tickets: Ticket[], status: Status) => {
-    let index;
-    let postObject;
-    if (status === "inprogress") {
-      index = 2;
-      postObject = { id: index, name: status, inprogress: tickets };
-    } else if (status === "completed") {
-      index = 3;
-      postObject = { id: index, name: status, completed: tickets };
-    } else if (status === "todo") {
-      index = 1;
-      postObject = { id: index, name: status, todo: tickets };
+    if (taskId) {
+      setViewModal(true);
     }
+  }, [taskId]);
 
-    const res = await fetch(`http://localhost:5000/tasks/${index}`, {
-      method: "PATCH",
-      headers: {
-        "Content-type": "application/json",
-        "Access-Control-Allow-Origin": "*",
-      },
-      body: JSON.stringify(postObject),
-    });
-
-    const data = await res.json();
-    console.log("data :", data);
-  };
-
-  // Fetch all tickets
-  const fetchAllTasks = async () => {
-    const res = await fetch(`http://localhost:5000/tasks`, {
-      method: "GET",
-      headers: {
-        "Content-type": "application/json",
-        "Access-Control-Allow-Origin": "*",
-      },
-    });
-    const data = await res.json();
-    return data;
-  };
-
-  // const fetchSingleTicket = async (id: string, status: Status) => {
-  //   const res = await fetch(`http://localhost:5000/tasks/1${status}/${id}`);
-  //   const data = await res.json();
-  //   return data;
-  // };
+  // get all tickets on first load and page refresh
+  useEffect(() => {
+    const getAllTickets = async () => {
+      setIsLoading(true);
+      let url = "http://localhost:5000/db";
+      try {
+        const ticketsFromServer = await fetchAllTickets(url);
+        if (ticketsFromServer) {
+          let todos = ticketsFromServer?.todo?.tasks;
+          let inprogress = ticketsFromServer?.inprogress?.tasks;
+          let completed = ticketsFromServer?.completed?.tasks;
+          setInTodosTickets(todos);
+          setInProgressTickets(inprogress);
+          setCompletedTickets(completed);
+        }
+      } catch (error) {
+        console.log("error from app", error);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+    getAllTickets();
+  }, []);
 
   // handles adding tasks to corresponding column given a status
   const handleAdd = (task: string, status: Status) => {
@@ -89,7 +81,7 @@ const App: React.FC = () => {
         updateTicket(ipTickets, status);
         break;
       case "completed":
-        let cTickets = [...inProgressTickets, { id: nanoid(), task, status }];
+        let cTickets = [...completedTickets, { id: nanoid(), task, status }];
         setCompletedTickets(cTickets);
         updateTicket(cTickets, status);
         break;
@@ -137,30 +129,31 @@ const App: React.FC = () => {
 
     setInTodosTickets(todos);
     updateTicket(todos, "todo");
+
     setInProgressTickets(inprogress);
     updateTicket(inprogress, "inprogress");
+
     setCompletedTickets(completed);
     updateTicket(completed, "completed");
   };
 
+  const value: ContextProps = {
+    inTodosTickets,
+    inProgressTickets,
+    completedTickets,
+    handleAdd,
+    isLoading,
+  };
+
   return (
-    <DragDropContext onDragEnd={onDragEnd}>
-      <div className={styles.App}>
-        <div className={styles.Appinner}>
-          <header>
-            <h1>Minimal Kanban Board</h1>
-          </header>
-          <ErrorBoundary fallback="Sorry.. there was an error">
-            <TicketList
-              inTodosTickets={inTodosTickets}
-              handleAdd={handleAdd}
-              inProgressTickets={inProgressTickets}
-              completedTickets={completedTickets}
-            />
-          </ErrorBoundary>
-        </div>
-      </div>
-    </DragDropContext>
+    <KanbanContext.Provider value={value}>
+      <DragDropWrapper onDragEnd={onDragEnd} isLoading={isLoading} />
+      <Modal modalClosed={toggleCancelHandler} show={viewModal}>
+        <ErrorBoundary fallback="Sorry.. there was an error">
+          <TicketDetails />
+        </ErrorBoundary>
+      </Modal>
+    </KanbanContext.Provider>
   );
 };
 

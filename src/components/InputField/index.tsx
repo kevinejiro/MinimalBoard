@@ -9,7 +9,7 @@ const InputField: React.FC<IProps> = ({ handleAdd }) => {
   const [Task, setTask] = useState("");
   const [isAddingNewTask, setIsAddingNewTask] = useState(false);
 
-  // calls handleAdd() and clears task local state
+  // calls handleAdd() and clears task local task state
   const handleAddTask = () => {
     let todo = Task.trim();
     if (todo !== "") {

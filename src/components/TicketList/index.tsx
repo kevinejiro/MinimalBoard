@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useContext } from "react";
 import { Droppable } from "react-beautiful-dnd";
 
 // components
@@ -8,22 +8,16 @@ import InputField from "../InputField";
 // style
 import styles from "./TicketList.module.css";
 
-// interface
-import { Ticket, Status } from "../../models/ticket";
+// context
+import { KanbanContext } from "../../App";
 
-interface IProps {
-  inTodosTickets: Ticket[];
-  inProgressTickets: Ticket[];
-  completedTickets: Ticket[];
-  handleAdd: (task: string, status: Status) => void;
-}
+const TicketList: React.FC = () => {
+  const appContext = useContext(KanbanContext);
+  let inTodosTickets = appContext?.inTodosTickets ?? [];
+  let inProgressTickets = appContext?.inProgressTickets ?? [];
+  let completedTickets = appContext?.completedTickets ?? [];
+  let handleAdd = appContext?.handleAdd ?? null;
 
-const TicketList: React.FC<IProps> = ({
-  inTodosTickets,
-  inProgressTickets,
-  completedTickets,
-  handleAdd,
-}: IProps) => {
   return (
     <section className={styles.ticketListContainer}>
       <div className={styles.column}>
@@ -40,11 +34,11 @@ const TicketList: React.FC<IProps> = ({
               }}
             >
               <ul className={styles.ticketList}>
-                {inTodosTickets.length === 0 ? (
+                {inTodosTickets?.length === 0 ? (
                   <p className={styles.placeholder}>There are no tasks yet</p>
                 ) : (
-                  inTodosTickets.map((ticket, index) => (
-                    <TodoItem index={index} ticket={ticket} key={ticket.id} />
+                  inTodosTickets?.map((ticket, index) => (
+                    <TodoItem index={index} ticket={ticket} key={ticket?.id} />
                   ))
                 )}
                 {provided.placeholder}
@@ -52,7 +46,9 @@ const TicketList: React.FC<IProps> = ({
             </div>
           )}
         </Droppable>
-        <InputField handleAdd={(task) => handleAdd(task, "todo")} />
+        <InputField
+          handleAdd={(task) => handleAdd && handleAdd(task, "todo")}
+        />
       </div>
       <div className={styles.column}>
         <h2>In Progress</h2>
@@ -68,11 +64,11 @@ const TicketList: React.FC<IProps> = ({
               }}
             >
               <ul className={styles.ticketList}>
-                {inProgressTickets.length === 0 ? (
+                {inProgressTickets?.length === 0 ? (
                   <p className={styles.placeholder}>There are no tasks yet</p>
                 ) : (
-                  inProgressTickets.map((ticket, index) => (
-                    <TodoItem index={index} ticket={ticket} key={ticket.id} />
+                  inProgressTickets?.map((ticket, index) => (
+                    <TodoItem index={index} ticket={ticket} key={ticket?.id} />
                   ))
                 )}
                 {provided.placeholder}
@@ -80,7 +76,9 @@ const TicketList: React.FC<IProps> = ({
             </div>
           )}
         </Droppable>
-        <InputField handleAdd={(task) => handleAdd(task, "inprogress")} />
+        <InputField
+          handleAdd={(task) => handleAdd && handleAdd(task, "inprogress")}
+        />
       </div>
       <div className={styles.column}>
         <h2>Completed</h2>
@@ -96,11 +94,11 @@ const TicketList: React.FC<IProps> = ({
               }}
             >
               <ul className={styles.ticketList}>
-                {completedTickets.length === 0 ? (
+                {completedTickets?.length === 0 ? (
                   <p className={styles.placeholder}>There are no tasks yet</p>
                 ) : (
-                  completedTickets.map((ticket, index) => (
-                    <TodoItem index={index} ticket={ticket} key={ticket.id} />
+                  completedTickets?.map((ticket, index) => (
+                    <TodoItem index={index} ticket={ticket} key={ticket?.id} />
                   ))
                 )}
                 {provided.placeholder}
@@ -108,7 +106,9 @@ const TicketList: React.FC<IProps> = ({
             </div>
           )}
         </Droppable>
-        <InputField handleAdd={(task) => handleAdd(task, "completed")} />
+        <InputField
+          handleAdd={(task) => handleAdd && handleAdd(task, "completed")}
+        />
       </div>
     </section>
   );

@@ -54,7 +54,7 @@ const App: React.FC = () => {
   useEffect(() => {
     const getAllTickets = async () => {
       setIsLoading(true);
-      let url = "http://localhost:5000/db";
+      let url = "http://localhost:4000/db";
       try {
         const ticketsFromServer = await fetchAllTickets(url);
         if (ticketsFromServer) {

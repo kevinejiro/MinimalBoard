@@ -16,14 +16,14 @@ export const fetchAllTickets = async (url: RequestInfo | URL) => {
     });
     if (!res.ok) {
       const message = `An error has occured: ${res.status}`;
-      toast.error(`${message}, kindly refresh or use firefox browser`);
+      toast.error(`${message}, kindly refresh`);
       // throw new Error(message);
     } else {
       const data = await res.json();
       return data;
     }
   } catch (error) {
-    toast.error(`${error}, kindly refresh or use firefox browser`);
+    toast.error(`${error}, kindly refresh`);
   }
 };
 
@@ -31,17 +31,17 @@ export const fetchAllTickets = async (url: RequestInfo | URL) => {
 export const updateTicket = async (tickets: Ticket[], status: Status) => {
   let patchObject = { tasks: tickets };
   try {
-    let res = await fetch(`http://localhost:5000/${status}`, {
+    let res = await fetch(`http://localhost:4000/${status}`, {
       method: "PATCH",
       headers: headers,
       body: JSON.stringify(patchObject),
     });
     if (!res.ok) {
-      const message = `An error has occured while update server: ${res.status}`;
+      const message = `An error has occured while updating server: ${res.status}`;
       toast.error(`${message}, kindly refresh and try again`);
     }
   } catch (error) {
-    toast.error(`${error}, kindly refresh or use firefox browser`);
+    toast.error(`${error}, kindly refresh and try again`);
   }
 };
 
@@ -53,13 +53,13 @@ export const fetchSingleTicket = async (url: RequestInfo | URL) => {
     });
     if (!res.ok) {
       const message = `An error has occured: ${res.status}`;
-      toast.error(`${message}, kindly refresh or use firefox browser`);
+      toast.error(`${message}, kindly refresh`);
       // throw new Error(message);
     } else {
       const data = await res.json();
       return data;
     }
   } catch (error) {
-    toast.error(`${error}, kindly refresh or use firefox browser`);
+    toast.error(`${error}, kindly refresh`);
   }
 };

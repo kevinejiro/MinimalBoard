@@ -1,0 +1,8 @@
+.detailsBody {
+  margin: 1rem;
+}
+
+.detailsStatus > h2 {
+  margin-left: 0;
+  margin-right: 0;
+}

@@ -2,6 +2,8 @@ import React, { useState, useEffect, useCallback, createContext } from "react";
 import { DropResult } from "react-beautiful-dnd";
 import { nanoid } from "nanoid";
 import { useLocation, useNavigate } from "react-router-dom";
+import { Toaster } from "react-hot-toast";
+
 // components
 import Modal from "./components/Modal/index";
 import ErrorBoundary from "./components/ErrorBoundary";
@@ -63,8 +65,6 @@ const App: React.FC = () => {
           setInProgressTickets(inprogress);
           setCompletedTickets(completed);
         }
-      } catch (error) {
-        console.log("error from app", error);
       } finally {
         setIsLoading(false);
       }
@@ -153,6 +153,17 @@ const App: React.FC = () => {
           <TicketDetails />
         </ErrorBoundary>
       </Modal>
+      <Toaster
+        toastOptions={{
+          error: {
+            style: {
+              color: "#000",
+              border: "1px solid lightgrey",
+              borderRadius: "4px",
+            },
+          },
+        }}
+      />
     </KanbanContext.Provider>
   );
 };

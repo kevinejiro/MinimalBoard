@@ -62,6 +62,10 @@ input[type="text"] {
   font-weight: 400;
 }
 
+span {
+  text-transform: capitalize;
+}
+
 p {
   font-size: var(--global-p-font-size);
   font-weight: 400;

@@ -4,6 +4,9 @@ import { useLocation } from "react-router-dom";
 // interface
 import { Ticket } from "../../models/ticket";
 
+// style
+import styles from "./TicketDetails.module.css";
+
 // Api
 import { fetchSingleTicket } from "../../api";
 
@@ -41,8 +44,6 @@ const TaskDetails: React.FC = () => {
             if (task) {
               setTicket(task);
             }
-          } catch (error) {
-            console.log("error from app", error);
           } finally {
             setIsLoading(false);
           }
@@ -60,10 +61,13 @@ const TaskDetails: React.FC = () => {
         </div>
       ) : ticket ? (
         <div key={ticket?.id}>
-          <h1>Task</h1>
-          <div>
-            <h2>{ticket?.task}</h2>
-            <div>{ticket?.status}</div>
+          <h2>Task</h2>
+          <div className={styles.detailsBody}>
+            <span>{ticket?.task}</span>
+            <div className={styles.detailsStatus}>
+              <h3>Status :</h3>
+              <span>{ticket?.status}</span>
+            </div>
           </div>
         </div>
       ) : (

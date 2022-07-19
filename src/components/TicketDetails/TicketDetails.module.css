@@ -6,3 +6,15 @@
   margin-left: 0;
   margin-right: 0;
 }
+
+.detailsStatus > span {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+}
+
+.detailsStatus > span svg {
+  width: 2rem;
+  margin-right: 0.5rem;
+  height: 1.5rem;
+}

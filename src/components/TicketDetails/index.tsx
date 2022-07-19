@@ -1,6 +1,11 @@
 import React, { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
 
+// svg components
+import CompletedIcon from "../svgs/CompletedIcon";
+import InProgressIcon from "../svgs/InProgressIcon";
+import TodoIcon from "../svgs/TodoIcon";
+
 // interface
 import { Ticket } from "../../models/ticket";
 
@@ -25,8 +30,6 @@ const TaskDetails: React.FC = () => {
   const taskId = query.get("taskId");
   let status = query.get("status");
 
-  console.log("ticketFromRouter :", ticketFromRouter);
-
   // get all tickets on first load and page refresh
   useEffect(() => {
     if (ticketFromRouter?.id) {
@@ -35,7 +38,7 @@ const TaskDetails: React.FC = () => {
       if (taskId && status) {
         const getTicket = async () => {
           setIsLoading(true);
-          let url = `http://localhost:5000/${status}`;
+          let url = `http://localhost:4000/${status}`;
           try {
             const ticketFromServer = await fetchSingleTicket(url);
             let task = ticketFromServer.tasks.find(
@@ -53,6 +56,19 @@ const TaskDetails: React.FC = () => {
     }
   }, [status, taskId, ticketFromRouter]);
 
+  let ticketIcon;
+  switch (status) {
+    case "todo":
+      ticketIcon = <TodoIcon />;
+      break;
+    case "inprogress":
+      ticketIcon = <InProgressIcon />;
+      break;
+    case "completed":
+      ticketIcon = <CompletedIcon />;
+      break;
+  }
+
   return (
     <>
       {isLoading ? (
@@ -66,7 +82,9 @@ const TaskDetails: React.FC = () => {
             <span>{ticket?.task}</span>
             <div className={styles.detailsStatus}>
               <h3>Status :</h3>
-              <span>{ticket?.status}</span>
+              <span>
+                {ticketIcon} {ticket?.status}
+              </span>
             </div>
           </div>
         </div>

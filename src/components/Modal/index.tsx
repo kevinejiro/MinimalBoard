@@ -1,5 +1,6 @@
 import styles from "./Modal.module.css";
 import { Backdrop } from "./Backdrop";
+import CancelIcon from "../svgs/CancelIcon";
 // import Cancel from "../assets/images/cancel.svg";
 
 interface IProps {
@@ -32,7 +33,7 @@ export const Modal: React.FC<IProps> = ({ show, modalClosed, children }) => (
       <div>
         <div>{children}</div>
         <div className={styles.ModalBtn} onClick={modalClosed}>
-          {/* <img src={Cancel} alt="cancel" className={styles.ModalBtn} /> */}X
+          <CancelIcon />
         </div>
       </div>
     </div>

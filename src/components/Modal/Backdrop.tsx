@@ -7,4 +7,10 @@ interface IProps {
 }
 
 export const Backdrop: React.FC<IProps> = ({ show, clicked }) =>
-  show ? <div className={styles.Backdrop} onClick={clicked}></div> : null;
+  show ? (
+    <div
+      data-testid="backDrop"
+      className={styles.Backdrop}
+      onClick={clicked}
+    ></div>
+  ) : null;

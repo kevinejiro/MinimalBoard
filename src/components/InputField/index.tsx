@@ -6,12 +6,12 @@ interface IProps {
 }
 
 const InputField: React.FC<IProps> = ({ handleAdd }) => {
-  const [Task, setTask] = useState("");
+  const [task, setTask] = useState("");
   const [isAddingNewTask, setIsAddingNewTask] = useState(false);
 
   // calls handleAdd() and clears task local task state
   const handleAddTask = () => {
-    let todo = Task.trim();
+    let todo = task.trim();
     if (todo !== "") {
       handleAdd(todo);
       setTask("");
@@ -20,14 +20,15 @@ const InputField: React.FC<IProps> = ({ handleAdd }) => {
   };
 
   return (
-    <div className={styles.inputContainer}>
+    <div className={styles.inputContainer} data-testid="addTask">
       {isAddingNewTask ? (
         <input
+          data-testid="addTaskInput"
           className={styles.formInput}
           autoFocus
           name="addTask"
           type="text"
-          value={Task}
+          value={task}
           onBlur={handleAddTask}
           onChange={(e) => setTask(e.target.value)}
           onKeyPress={(event) => {
@@ -40,6 +41,7 @@ const InputField: React.FC<IProps> = ({ handleAdd }) => {
         />
       ) : (
         <button
+          data-testid="addButton"
           className={styles.addButton}
           onClick={() => setIsAddingNewTask(true)}
         >

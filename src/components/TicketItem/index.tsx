@@ -20,7 +20,11 @@ const TicketItem: React.FC<IProps> = ({ index, ticket }) => {
   };
 
   return (
-    <Draggable draggableId={ticket.id.toString()} index={index}>
+    <Draggable
+      draggableId={ticket.id?.toString()}
+      index={index}
+      key={ticket?.id}
+    >
       {(provided, snapshot) => (
         <li
           className={styles.todoItem}
@@ -36,6 +40,7 @@ const TicketItem: React.FC<IProps> = ({ index, ticket }) => {
         >
           <div className={styles.dragableIcon}>&diams;</div>
           <span
+            data-testid="itemText"
             className={
               ticket?.status === "completed"
                 ? styles.completed

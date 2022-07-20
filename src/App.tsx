@@ -34,8 +34,8 @@ const App: React.FC = () => {
 
   const navigate = useNavigate();
 
-  const toggleCancelHandler = useCallback(() => {
-    setViewModal(!viewModal);
+  const cancelHandler = useCallback(() => {
+    setViewModal(false);
     navigate("/");
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [viewModal]);
@@ -148,7 +148,7 @@ const App: React.FC = () => {
   return (
     <KanbanContext.Provider value={value}>
       <DragDropWrapper onDragEnd={onDragEnd} isLoading={isLoading} />
-      <Modal modalClosed={toggleCancelHandler} show={viewModal}>
+      <Modal closeModal={cancelHandler} show={viewModal}>
         <ErrorBoundary fallback="Sorry.. there was an error">
           <TicketDetails />
         </ErrorBoundary>

@@ -23,7 +23,7 @@ class ErrorBoundary extends Component<Props, State> {
     if (this.state.hasError) {
       return (
         <div className="loaderWrapper">
-          <h2>{this.props.fallback}</h2>
+          <h2 data-testid="errorboundary">{this.props.fallback}</h2>
         </div>
       );
     }

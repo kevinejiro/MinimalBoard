@@ -15,7 +15,7 @@ import styles from "./TicketDetails.module.css";
 // Api
 import { fetchSingleTicket } from "../../api";
 
-const TaskDetails: React.FC = () => {
+const TicketDetails: React.FC = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [ticket, setTicket] = useState<Ticket | null>(null);
 
@@ -95,4 +95,4 @@ const TaskDetails: React.FC = () => {
   );
 };
 
-export default TaskDetails;
+export default TicketDetails;

@@ -5,7 +5,7 @@ import CancelIcon from "../svgs/CancelIcon";
 
 interface IProps {
   show: boolean;
-  modalClosed: () => void;
+  closeModal: () => void;
   children: React.ReactNode;
 }
 
@@ -23,16 +23,21 @@ const scaleDown = {
   } as React.CSSProperties,
 };
 
-export const Modal: React.FC<IProps> = ({ show, modalClosed, children }) => (
+export const Modal: React.FC<IProps> = ({ show, closeModal, children }) => (
   <div>
-    <Backdrop show={show} clicked={modalClosed} />
+    <Backdrop show={show} clicked={closeModal} />
     <div
+      data-testid="modal"
       className={styles.Modal}
       style={show ? scaleUp.styles : scaleDown.styles}
     >
       <div>
         <div>{children}</div>
-        <div className={styles.ModalBtn} onClick={modalClosed}>
+        <div
+          className={styles.ModalBtn}
+          onClick={closeModal}
+          data-testid="cancelButton"
+        >
           <CancelIcon />
         </div>
       </div>

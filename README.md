@@ -46,3 +46,4 @@ In the project directory, you can run:
 ## Improvements
 
 - Abstract logic to a decoupled backend.
+- Add more test (figure out why React dnd fails to get id from prop while testing)

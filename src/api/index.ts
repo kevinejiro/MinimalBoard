@@ -1,5 +1,5 @@
 import { toast } from "react-hot-toast";
-// interface
+// interface and type
 import { Ticket, Status } from "../models/ticket";
 
 const headers = {

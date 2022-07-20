@@ -21,7 +21,8 @@ The three pillars of front-end development are HTML, CSS and JavaScript. We woul
 
 This Minimal Kanban board is built with React and TypeScript.
 
-![Screenshot](Screenshot.png)
+<img width="1440" alt="Screenshot 2022-07-20 at 8 35 41 PM" src="https://user-images.githubusercontent.com/28443813/180068353-15146f7d-7e7c-4e95-8033-5ecd4872aaf3.png">
+
 
 ## Features
 

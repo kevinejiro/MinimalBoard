@@ -5,15 +5,15 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { Toaster } from "react-hot-toast";
 
 // components
-import Modal from "./components/Modal/index";
+import Modal from "./components/Modal";
+import TicketDetails from "./components/TicketDetails";
 import ErrorBoundary from "./components/ErrorBoundary";
 import DragDropWrapper from "./components/DragDropWrapper";
-import TicketDetails from "./components/TicketDetails";
+
 // types
 import { Ticket, Status } from "./models/ticket";
 // Api
 import { fetchAllTickets, updateTicket } from "./api";
-
 interface ContextProps {
   inTodosTickets: Ticket[];
   inProgressTickets: Ticket[];
@@ -73,26 +73,32 @@ const App: React.FC = () => {
   }, []);
 
   // handles adding tasks to corresponding column given a status
-  const handleAdd = (task: string, status: Status) => {
-    switch (status) {
-      case "inprogress":
-        let ipTickets = [...inProgressTickets, { id: nanoid(), task, status }];
-        setInProgressTickets(ipTickets);
-        updateTicket(ipTickets, status);
-        break;
-      case "completed":
-        let cTickets = [...completedTickets, { id: nanoid(), task, status }];
-        setCompletedTickets(cTickets);
-        updateTicket(cTickets, status);
-        break;
+  const handleAdd = useCallback(
+    (task: string, status: Status) => {
+      switch (status) {
+        case "inprogress":
+          let ipTickets = [
+            ...inProgressTickets,
+            { id: nanoid(), task, status },
+          ];
+          setInProgressTickets(ipTickets);
+          updateTicket(ipTickets, status);
+          break;
+        case "completed":
+          let cTickets = [...completedTickets, { id: nanoid(), task, status }];
+          setCompletedTickets(cTickets);
+          updateTicket(cTickets, status);
+          break;
 
-      default:
-        let todoTickets = [...inTodosTickets, { id: nanoid(), task, status }];
-        setInTodosTickets(todoTickets);
-        updateTicket(todoTickets, status);
-        break;
-    }
-  };
+        default:
+          let todoTickets = [...inTodosTickets, { id: nanoid(), task, status }];
+          setInTodosTickets(todoTickets);
+          updateTicket(todoTickets, status);
+          break;
+      }
+    },
+    [completedTickets, inProgressTickets, inTodosTickets]
+  );
 
   // handles drag end logic
   const onDragEnd = (result: DropResult) => {
@@ -141,18 +147,18 @@ const App: React.FC = () => {
     inTodosTickets,
     inProgressTickets,
     completedTickets,
-    handleAdd,
     isLoading,
+    handleAdd,
   };
 
   return (
     <KanbanContext.Provider value={value}>
       <DragDropWrapper onDragEnd={onDragEnd} isLoading={isLoading} />
-      <Modal closeModal={cancelHandler} show={viewModal}>
-        <ErrorBoundary fallback="Sorry.. there was an error">
+      <ErrorBoundary fallback="Sorry.. there was an error">
+        <Modal closeModal={cancelHandler} show={viewModal}>
           <TicketDetails />
-        </ErrorBoundary>
-      </Modal>
+        </Modal>
+      </ErrorBoundary>
       <Toaster
         toastOptions={{
           error: {

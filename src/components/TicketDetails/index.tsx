@@ -5,6 +5,7 @@ import { useLocation } from "react-router-dom";
 import CompletedIcon from "../svgs/CompletedIcon";
 import InProgressIcon from "../svgs/InProgressIcon";
 import TodoIcon from "../svgs/TodoIcon";
+import Loader from "../Loader";
 
 // interface
 import { Ticket } from "../../models/ticket";
@@ -72,9 +73,7 @@ const TicketDetails: React.FC = () => {
   return (
     <>
       {isLoading ? (
-        <div className="loaderWrapper">
-          <div className="loading"></div>
-        </div>
+        <Loader />
       ) : ticket ? (
         <div key={ticket?.id}>
           <h2>Task</h2>
@@ -89,10 +88,10 @@ const TicketDetails: React.FC = () => {
           </div>
         </div>
       ) : (
-        <h1>No task with that ID</h1>
+        <h2>No task with that ID</h2>
       )}
     </>
   );
 };
 
-export default TicketDetails;
+export default React.memo(TicketDetails);

@@ -4,6 +4,7 @@ import { DragDropContext, DropResult } from "react-beautiful-dnd";
 // components
 import TicketList from "./TicketList";
 import ErrorBoundary from "./ErrorBoundary";
+import Loader from "./Loader";
 
 // css
 import styles from "../App.module.css";
@@ -22,13 +23,7 @@ const DragDropWrapper: React.FC<IProps> = ({ onDragEnd, isLoading }) => {
             <h1>Minimal Kanban Board</h1>
           </header>
           <ErrorBoundary fallback="Sorry.. there was an error">
-            {isLoading ? (
-              <div className="loaderWrapper">
-                <div className="loading"></div>
-              </div>
-            ) : (
-              <TicketList />
-            )}
+            {isLoading ? <Loader /> : <TicketList />}
           </ErrorBoundary>
         </div>
       </div>

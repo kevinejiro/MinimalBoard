@@ -1,6 +1,4 @@
-# Technical assignment front-end engineer
-
-Minimal Kanban board.
+# Minimal Kanban board.
 
 Task:
 
@@ -8,21 +6,11 @@ Task:
 - be able to move tickets between the various columns in an interactive way, persisting across page refreshes.
 - be able to share a direct link to the ticket.
 
-**Minimal requirements**
-
-The three pillars of front-end development are HTML, CSS and JavaScript. We would like to see you know how to use them for the right job.
-
-- Use React
-- Pay attention to semantics: any HTML might work, but choosing the right tags show you care.
-- Show us you know how to create a modern user interface using your favourite styling solution.
-- Interact with an API. [JSON Server](https://github.com/typicode/json-server) can be used to add a fake REST API or you can decide to build your own.
-
 # Kanban board
 
 This Minimal Kanban board is built with React and TypeScript.
 
 <img width="1440" alt="Screenshot 2022-07-20 at 8 35 41 PM" src="https://user-images.githubusercontent.com/28443813/180068353-15146f7d-7e7c-4e95-8033-5ecd4872aaf3.png">
-
 
 ## Features
 

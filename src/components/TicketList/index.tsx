@@ -1,9 +1,10 @@
 import React, { useContext } from "react";
-import { Droppable } from "react-beautiful-dnd";
 
 // components
-import TodoItem from "../TicketItem";
-import InputField from "../InputField";
+import Column from "../Column";
+
+// interface
+import { ITicketList } from "../../models/ticket";
 
 // style
 import styles from "./TicketList.module.css";
@@ -16,100 +17,22 @@ const TicketList: React.FC = () => {
   let inTodosTickets = appContext?.inTodosTickets ?? [];
   let inProgressTickets = appContext?.inProgressTickets ?? [];
   let completedTickets = appContext?.completedTickets ?? [];
-  let handleAdd = appContext?.handleAdd ?? null;
+
+  const ticketList: ITicketList[] = [
+    { column: "todos", tickets: inTodosTickets },
+    { column: "inprogress", tickets: inProgressTickets },
+    { column: "completed", tickets: completedTickets },
+  ];
 
   return (
     <section className={styles.ticketListContainer}>
-      <div className={styles.column}>
-        <h2>Todos</h2>
-        <Droppable droppableId="todo-column">
-          {(provided, snapshot) => (
-            <div
-              ref={provided.innerRef}
-              {...provided.droppableProps}
-              style={{
-                background: snapshot.isDraggingOver
-                  ? "rgba(245,245,245, 0.2)"
-                  : "none",
-              }}
-            >
-              <ul className={styles.ticketList}>
-                {inTodosTickets?.length === 0 ? (
-                  <p className={styles.placeholder}>There are no tasks yet</p>
-                ) : (
-                  inTodosTickets?.map((ticket, index) => (
-                    <TodoItem index={index} ticket={ticket} key={ticket?.id} />
-                  ))
-                )}
-                {provided.placeholder}
-              </ul>
-            </div>
-          )}
-        </Droppable>
-        <InputField
-          handleAdd={(task) => handleAdd && handleAdd(task, "todo")}
+      {ticketList.map((ticketsObject) => (
+        <Column
+          tickets={ticketsObject.tickets}
+          column={ticketsObject.column}
+          key={ticketsObject.column}
         />
-      </div>
-      <div className={styles.column}>
-        <h2>In Progress</h2>
-        <Droppable droppableId="inprogress-column">
-          {(provided, snapshot) => (
-            <div
-              ref={provided.innerRef}
-              {...provided.droppableProps}
-              style={{
-                background: snapshot.isDraggingOver
-                  ? "rgba(245,245,245, 0.2)"
-                  : "none",
-              }}
-            >
-              <ul className={styles.ticketList}>
-                {inProgressTickets?.length === 0 ? (
-                  <p className={styles.placeholder}>There are no tasks yet</p>
-                ) : (
-                  inProgressTickets?.map((ticket, index) => (
-                    <TodoItem index={index} ticket={ticket} key={ticket?.id} />
-                  ))
-                )}
-                {provided.placeholder}
-              </ul>
-            </div>
-          )}
-        </Droppable>
-        <InputField
-          handleAdd={(task) => handleAdd && handleAdd(task, "inprogress")}
-        />
-      </div>
-      <div className={styles.column}>
-        <h2>Completed</h2>
-        <Droppable droppableId="completed-column">
-          {(provided, snapshot) => (
-            <div
-              ref={provided.innerRef}
-              {...provided.droppableProps}
-              style={{
-                background: snapshot.isDraggingOver
-                  ? "rgba(245,245,245, 0.2)"
-                  : "none",
-              }}
-            >
-              <ul className={styles.ticketList}>
-                {completedTickets?.length === 0 ? (
-                  <p className={styles.placeholder}>There are no tasks yet</p>
-                ) : (
-                  completedTickets?.map((ticket, index) => (
-                    <TodoItem index={index} ticket={ticket} key={ticket?.id} />
-                  ))
-                )}
-                {provided.placeholder}
-              </ul>
-            </div>
-          )}
-        </Droppable>
-        <InputField
-          handleAdd={(task) => handleAdd && handleAdd(task, "completed")}
-        />
-      </div>
+      ))}
     </section>
   );
 };

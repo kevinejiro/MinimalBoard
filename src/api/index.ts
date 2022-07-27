@@ -7,10 +7,12 @@ const headers = {
   "Access-Control-Allow-Origin": "*",
 };
 
+const BASE_URL = process.env.REACT_APP_API_BASE_URL;
+
 // fetch all tickets
 export const fetchAllTickets = async (url: RequestInfo | URL) => {
   try {
-    let res = await fetch(url, {
+    let res = await fetch(`${BASE_URL}${url}`, {
       method: "GET",
       headers: headers,
     });
@@ -31,7 +33,7 @@ export const fetchAllTickets = async (url: RequestInfo | URL) => {
 export const updateTicket = async (tickets: Ticket[], status: Status) => {
   let patchObject = { tasks: tickets };
   try {
-    let res = await fetch(`http://localhost:4000/${status}`, {
+    let res = await fetch(`${BASE_URL}/${status}`, {
       method: "PATCH",
       headers: headers,
       body: JSON.stringify(patchObject),
@@ -47,7 +49,7 @@ export const updateTicket = async (tickets: Ticket[], status: Status) => {
 
 export const fetchSingleTicket = async (url: RequestInfo | URL) => {
   try {
-    let res = await fetch(url, {
+    let res = await fetch(`${BASE_URL}${url}`, {
       method: "GET",
       headers: headers,
     });

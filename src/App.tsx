@@ -54,11 +54,11 @@ const App: React.FC = () => {
   useEffect(() => {
     const getAllTickets = async () => {
       setIsLoading(true);
-      let url = "http://localhost:4000/db";
+      let URL = "/db";
       try {
-        const ticketsFromServer = await fetchAllTickets(url);
+        const ticketsFromServer = await fetchAllTickets(URL);
         if (ticketsFromServer) {
-          let todos = ticketsFromServer?.todo?.tasks;
+          let todos = ticketsFromServer?.todos?.tasks;
           let inprogress = ticketsFromServer?.inprogress?.tasks;
           let completed = ticketsFromServer?.completed?.tasks;
           setInTodosTickets(todos);
@@ -114,7 +114,7 @@ const App: React.FC = () => {
     let inprogress = inProgressTickets;
     let completed = completedTickets;
 
-    if (source.droppableId === "todo-column") {
+    if (source.droppableId === "todos-column") {
       add = todos[source.index];
       todos.splice(source.index, 1);
     } else if (source.droppableId === "inprogress-column") {
@@ -125,8 +125,8 @@ const App: React.FC = () => {
       completed.splice(source.index, 1);
     }
 
-    if (destination.droppableId === "todo-column") {
-      todos.splice(destination.index, 0, { ...add, status: "todo" });
+    if (destination.droppableId === "todos-column") {
+      todos.splice(destination.index, 0, { ...add, status: "todos" });
     } else if (destination.droppableId === "inprogress-column") {
       inprogress.splice(destination.index, 0, { ...add, status: "inprogress" });
     } else {
@@ -134,7 +134,7 @@ const App: React.FC = () => {
     }
 
     setInTodosTickets(todos);
-    updateTicket(todos, "todo");
+    updateTicket(todos, "todos");
 
     setInProgressTickets(inprogress);
     updateTicket(inprogress, "inprogress");

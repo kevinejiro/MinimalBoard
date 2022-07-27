@@ -54,6 +54,7 @@ h2 {
   font-size: var(--global-h2-font-size);
   margin: 1rem;
   font-weight: 400;
+  text-transform: capitalize;
 }
 
 span,

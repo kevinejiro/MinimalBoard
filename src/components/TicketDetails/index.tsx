@@ -39,9 +39,9 @@ const TicketDetails: React.FC = () => {
       if (taskId && status) {
         const getTicket = async () => {
           setIsLoading(true);
-          let url = `http://localhost:4000/${status}`;
+          let URL = `/${status}`;
           try {
-            const ticketFromServer = await fetchSingleTicket(url);
+            const ticketFromServer = await fetchSingleTicket(URL);
             let task = ticketFromServer.tasks.find(
               (x: { id: string }) => x.id === taskId
             );
@@ -59,7 +59,7 @@ const TicketDetails: React.FC = () => {
 
   let ticketIcon;
   switch (status) {
-    case "todo":
+    case "todos":
       ticketIcon = <TodoIcon />;
       break;
     case "inprogress":
